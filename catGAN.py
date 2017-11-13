@@ -110,25 +110,21 @@ if __name__ == '__main__':
         for epoch in range(CONFIG['epochs']):
             # run iterations
             for i in range(batch_num):
-                global_step += 1
                 print('Epoch %d: Iteration %d' % (epoch, i))
+                random_noise = np.random.uniform(low=-1.0,
+                                                 high=1.0,
+                                                 size=[CONFIG['batch_size'], CONFIG['noise_size']]).astype(np.float32)
                 # train discriminator
                 for d in range(CONFIG['dis_iterations']):
                     # get images
                     real_images = sess.run(image_batch)
                     sess.run(dis_clip)
 
-                    random_noise = np.random.uniform(low=-1.0,
-                                                     high=1.0,
-                                                     size=[CONFIG['batch_size'], CONFIG['noise_size']]).astype(np.float32)
                     _, dis_summary_values = sess.run([dis_trainer, dis_summary],
                                                      feed_dict={noise: random_noise, real_image: real_images})
 
                 # train generator
                 for g in range(CONFIG['gen_iterations']):
-                    random_noise = np.random.uniform(low=-1.0,
-                                                     high=1.0,
-                                                     size=[CONFIG['batch_size'], CONFIG['noise_size']]).astype(np.float32)
                     _, gen_summary_values = sess.run([gen_trainer, gen_summary],
                                                      feed_dict={noise: random_noise})
 
@@ -141,5 +137,8 @@ if __name__ == '__main__':
                 if global_step % 500 == 0:
                     saver.save(sess=sess,
                                save_path='model/model_%d.ckpt' % global_step)
+
+                global_step += 1
+
         coord.request_stop()
         coord.join(threads)
