@@ -12,8 +12,8 @@ CONFIG = {
     'height': 128,
     'channels': 3,
     'noise_size': 100,
-    'batch_size': 256,
-    'epochs': 500,
+    'batch_size': 64,
+    'epochs': 1000,
     'dis_iterations': 5,
     'gen_iterations': 1,
     'data_dir': 'data_prepared'
@@ -127,18 +127,19 @@ if __name__ == '__main__':
                 for g in range(CONFIG['gen_iterations']):
                     _, gen_summary_values = sess.run([gen_trainer, gen_summary],
                                                      feed_dict={noise: random_noise})
-
-                if global_step % 50 == 0:
-                    summary_writer.add_summary(summary=gen_summary_values,
-                                               global_step=global_step)
-                    summary_writer.add_summary(summary=dis_summary_values,
-                                               global_step=global_step)
-
-                if global_step % 500 == 0:
-                    saver.save(sess=sess,
-                               save_path='model/model_%d.ckpt' % global_step)
-
+                # update global step
                 global_step += 1
+
+            # summary for each epoch
+            summary_writer.add_summary(summary=gen_summary_values,
+                                       global_step=epoch)
+            summary_writer.add_summary(summary=dis_summary_values,
+                                       global_step=epoch)
+
+            if epoch % 10 == 0:
+                saver.save(sess=sess,
+                           save_path='model/model_%d.ckpt' % epoch)
+
 
         coord.request_stop()
         coord.join(threads)
