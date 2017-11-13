@@ -42,7 +42,7 @@ def generator(noise, config, train=True, reuse=False):
                                            trainable=train,
                                            padding='same',
                                            name='conv2')
-        bn2 = tf.contrib.layers.batch_normalization(conv2,
+        bn2 = tf.contrib.layers.batch_norm(conv2,
                                             scope='bias2')
         act2 = tf.nn.relu(bn2,
                           name='activation2')
@@ -55,7 +55,7 @@ def generator(noise, config, train=True, reuse=False):
                                            trainable=train,
                                            padding='same',
                                            name='conv3')
-        bn3 = tf.contrib.layers.batch_normalization(conv3,
+        bn3 = tf.contrib.layers.batch_norm(conv3,
                                             scope='bias3')
         act3 = tf.nn.relu(bn3,
                           name='activation3')
@@ -68,7 +68,7 @@ def generator(noise, config, train=True, reuse=False):
                                            trainable=train,
                                            padding='same',
                                            name='conv4')
-        bn4 = tf.contrib.layers.batch_normalization(conv4,
+        bn4 = tf.contrib.layers.batch_norm(conv4,
                                             scope='bias4')
         act4 = tf.nn.relu(bn4,
                           name='activation4')
@@ -81,7 +81,7 @@ def generator(noise, config, train=True, reuse=False):
                                            trainable=train,
                                            padding='same',
                                            name='conv5')
-        bn5 = tf.contrib.layers.batch_normalization(conv5,
+        bn5 = tf.contrib.layers.batch_norm(conv5,
                                             scope='bias5')
         act5 = tf.nn.relu(bn5,
                           name='activation5')

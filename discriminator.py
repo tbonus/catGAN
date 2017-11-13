@@ -23,7 +23,7 @@ def discriminator(image, config, train=True, reuse=False):
                                  kernel_initializer=tf.truncated_normal_initializer(),
                                  padding='SAME',
                                  name='conv1')
-        bn1 = tf.contrib.layers.batch_normalization(conv1,
+        bn1 = tf.contrib.layers.batch_norm(conv1,
                                                     scope='bias1')
         act1 = LReLu(bn1, name='act1')
 
@@ -34,7 +34,7 @@ def discriminator(image, config, train=True, reuse=False):
                                  kernel_initializer=tf.truncated_normal_initializer(),
                                  padding='SAME',
                                  name='conv2')
-        bn2 = tf.contrib.layers.batch_normalization(conv2,
+        bn2 = tf.contrib.layers.batch_norm(conv2,
                                                     scope='bias2')
         act2 = LReLu(bn2, name='act2')
 
@@ -45,7 +45,7 @@ def discriminator(image, config, train=True, reuse=False):
                                  kernel_initializer=tf.truncated_normal_initializer(),
                                  padding='SAME',
                                  name='conv3')
-        bn3 = tf.contrib.layers.batch_normalization(conv3,
+        bn3 = tf.contrib.layers.batch_norm(conv3,
                                                     scope='bias3')
         act3 = LReLu(bn3, name='act3')
 
@@ -56,7 +56,7 @@ def discriminator(image, config, train=True, reuse=False):
                                  kernel_initializer=tf.truncated_normal_initializer(),
                                  padding='SAME',
                                  name='conv4')
-        bn4 = tf.contrib.layers.batch_normalization(conv4,
+        bn4 = tf.contrib.layers.batch_norm(conv4,
                                                     scope='bias4')
         act4 = LReLu(bn4, name='act2')
 

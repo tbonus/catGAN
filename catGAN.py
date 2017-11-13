@@ -99,15 +99,18 @@ if __name__ == '__main__':
         # save graph to tensorboard
         summary_writer = tf.summary.FileWriter('/tmp/logs/catGAN',
                                                graph=sess.graph)
-        # saver.save(sess=sess, save_path='model/model.ckpt')
+        saver.save(sess=sess, save_path='model/model.ckpt')
         print('\tGraph exported to Tensorboard')
 
-        tf.train.start_queue_runners(sess=sess)
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
         print('Learning started\n')
+        global_step = 0
         for epoch in range(CONFIG['epochs']):
             # run iterations
             for i in range(batch_num):
+                global_step += 1
                 print('Epoch %d: Iteration %d' % (epoch, i))
                 # train discriminator
                 for d in range(CONFIG['dis_iterations']):
@@ -120,8 +123,6 @@ if __name__ == '__main__':
                                                      size=[CONFIG['batch_size'], CONFIG['noise_size']]).astype(np.float32)
                     _, dis_summary_values = sess.run([dis_trainer, dis_summary],
                                                      feed_dict={noise: random_noise, real_image: real_images})
-                summary_writer.add_summary(summary=dis_summary_values,
-                                           global_step=epoch * CONFIG['batch_size'] + i)
 
                 # train generator
                 for g in range(CONFIG['gen_iterations']):
@@ -129,7 +130,16 @@ if __name__ == '__main__':
                                                      high=1.0,
                                                      size=[CONFIG['batch_size'], CONFIG['noise_size']]).astype(np.float32)
                     _, gen_summary_values = sess.run([gen_trainer, gen_summary],
-                                                    feed_dict={noise: random_noise})
-                summary_writer.add_summary(summary=gen_summary_values,
-                                           global_step=epoch * CONFIG['batch_size'] + i)
+                                                     feed_dict={noise: random_noise})
 
+                if global_step % 50 == 0:
+                    summary_writer.add_summary(summary=gen_summary_values,
+                                               global_step=epoch * CONFIG['batch_size'] + i)
+                    summary_writer.add_summary(summary=dis_summary_values,
+                                               global_step=epoch * CONFIG['batch_size'] + i)
+
+                if global_step % 500 == 0:
+                    saver.save(sess=sess,
+                               save_path='model/model_%d.ckpt' % global_step)
+        coord.request_stop()
+        coord.join(threads)
