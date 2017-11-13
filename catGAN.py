@@ -12,8 +12,8 @@ CONFIG = {
     'height': 128,
     'channels': 3,
     'noise_size': 100,
-    'batch_size': 32,
-    'epochs': 5,
+    'batch_size': 256,
+    'epochs': 500,
     'dis_iterations': 5,
     'gen_iterations': 1,
     'data_dir': 'data_prepared'
@@ -134,9 +134,9 @@ if __name__ == '__main__':
 
                 if global_step % 50 == 0:
                     summary_writer.add_summary(summary=gen_summary_values,
-                                               global_step=epoch * CONFIG['batch_size'] + i)
+                                               global_step=global_step)
                     summary_writer.add_summary(summary=dis_summary_values,
-                                               global_step=epoch * CONFIG['batch_size'] + i)
+                                               global_step=global_step)
 
                 if global_step % 500 == 0:
                     saver.save(sess=sess,
