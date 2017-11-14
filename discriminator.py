@@ -75,4 +75,8 @@ def discriminator(image, config, train=True, reuse=False):
 
         logits = tf.add(tf.matmul(fc1, w1), b1, name='logits')
 
+        if config['sigmoid']:
+            logits_sigmoid = tf.nn.sigmoid(logits, name='logits_sigmoid')
+            return logits_sigmoid
+
         return logits

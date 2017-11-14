@@ -16,7 +16,8 @@ CONFIG = {
     'epochs': 1000,
     'dis_iterations': 5,
     'gen_iterations': 1,
-    'data_dir': 'data_prepared'
+    'data_dir': 'celeba_cropped',
+    'sigmoid': True
 }
 
 if __name__ == '__main__':
@@ -97,7 +98,7 @@ if __name__ == '__main__':
         print('\tVariables initialized')
 
         # save graph to tensorboard
-        summary_writer = tf.summary.FileWriter('/tmp/logs/catGAN',
+        summary_writer = tf.summary.FileWriter('/tmp/logs/catGAN/celeba',
                                                graph=sess.graph)
         saver.save(sess=sess, save_path='model/model.ckpt')
         print('\tGraph exported to Tensorboard')
