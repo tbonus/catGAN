@@ -84,6 +84,9 @@ if __name__ == '__main__':
     # declare model saver
     saver = tf.train.Saver()
 
+    gen_summary_values = None
+    dis_summary_values = None
+
     # create session
     with tf.Session() as sess:
         print('Setting up session:')
