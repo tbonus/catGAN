@@ -80,12 +80,11 @@ if __name__ == '__main__':
     image_batch, image_num = prepare_data(config=CONFIG)
     batch_num = image_num // CONFIG['batch_size']
     print('Dataset ready')
+    print('\t%d images' % (image_num))
+    print('\t%d iterations per epoch' % (batch_num))
 
     # declare model saver
     saver = tf.train.Saver()
-
-    gen_summary_values = None
-    dis_summary_values = None
 
     # create session
     with tf.Session() as sess:

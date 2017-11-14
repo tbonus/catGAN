@@ -12,8 +12,7 @@ def prepare_data(config):
     images = []
 
     for each in os.listdir(data_dir):
-        if 'cat' in each:
-            images.append(os.path.join(data_dir, each))
+        images.append(os.path.join(data_dir, each))
 
     all_images = tf.convert_to_tensor(images, dtype=tf.string)
 
