@@ -17,7 +17,7 @@ CONFIG = {
     'dis_iterations': 5,
     'gen_iterations': 1,
     'data_dir': 'celeba_cropped',
-    'sigmoid': True
+    'sigmoid': False
 }
 
 if __name__ == '__main__':
@@ -130,19 +130,24 @@ if __name__ == '__main__':
                 for g in range(CONFIG['gen_iterations']):
                     _, gen_summary_values = sess.run([gen_trainer, gen_summary],
                                                      feed_dict={noise: random_noise})
+
+                if i % 100 == 0:
+                    summary_writer.add_summary(summary=dis_summary_values,
+                                               global_step=global_step)
+                    summary_writer.add_summary(summary=gen_summary_values,
+                                               global_step=global_step)
+
                 # update global step
                 global_step += 1
 
             # summary for each epoch
             summary_writer.add_summary(summary=gen_summary_values,
-                                       global_step=epoch)
+                                       global_step=global_step)
             summary_writer.add_summary(summary=dis_summary_values,
-                                       global_step=epoch)
+                                       global_step=global_step)
 
-            if epoch % 10 == 0:
-                saver.save(sess=sess,
-                           save_path='model/model_%d.ckpt' % epoch)
-
+            saver.save(sess=sess,
+                       save_path='model/model_%d.ckpt' % epoch)
 
         coord.request_stop()
         coord.join(threads)
